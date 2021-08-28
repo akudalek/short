@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='templates/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='templates/css/base.css') }}">
+    <title>Коты</title>
+</head>
+
+<body>
+<main>
+    <div class="p-5">
+        <div class="row pt-3 pb-3">
+
+            <div class="col-12 pt-5">
+                <div class="row rounded bg-dark p-2">
+                    <div class="col-3">
+                        <input id="input-breed" class="form-control mr-sm-2" type="text" placeholder="Порода" aria-label="Search">
+                    </div>
+                    <div class="col-3">
+                        <input id="input-name" class="form-control mr-sm-2" type="text" placeholder="Имя" aria-label="Search">
+                    </div>
+                    <div class="col-2">
+                        <input id="input-age" class="form-control mr-sm-2" type="text" placeholder="Возраст" aria-label="Search">
+                    </div>
+                    <div class="col-3">
+                        <input id="input-description" class="form-control mr-sm-2" type="text" placeholder="Описание" aria-label="Search">
+                    </div>
+                    <div class="col-1">
+                        <button id="search" onclick="search_cats()" type="button" class="btn btn-outline-success">Поиск</button>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                {% for cat in cats %}
+                    <div class="card p-2 m-2 ml-5" style="width: 18rem;">
+                        <img onclick="changeURL(this)" name="{{cat.id}}" src="data:;base64,{{ cat.img }}" class="card-img-top"  >
+                    </div>
+                {% endfor %}
+                </div>
+
+                <div class="row pt-5">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            {% for i,j in list_sheets.items() %}
+                            {% if request.path.split('/')[-1]== '%s'%(i|int-1)%}
+                            <li class="page-item active"><a class="page-link" href="{{ '%s'%j }}">{{ i }}</a></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="{{ '%s'%j }}">{{ i }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<script type="text/javascript">
+    function changeURL(btn) {
+        document.location.href = "/cat/" + btn.name;
+    }
+
+    function loadXMLDoc(url, data, type="POST") {
+      var xmlhttp;
+      if (window.XMLHttpRequest) { // код для IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+      } else { // код для IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+
+      xmlhttp.open(type, url, true);
+      xmlhttp.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+      xmlhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+      xmlhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
+      xmlhttp.send(data);
+
+      xmlhttp.onload = location.reload();
+    }
+
+    function search_cats(){
+        var data = {};
+        data['name']=document.getElementById("input-name").value;
+        data['breed']=document.getElementById("input-breed").value;
+        data['age']=document.getElementById("input-age").value;
+        data['description']=document.getElementById("input-description").value;
+        var json = "name=" + document.getElementById("input-name").value;
+        alert(json);
+
+        loadXMLDoc(url='/search', data=json, type="GET");
+
+      }
+</script>
+
+</body>
+
+</html>

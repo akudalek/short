@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='templates/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='templates/css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='templates/css/font-awesome.min.css') }}">
+    <title>Кот</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-8 col-lg-6">
+            <!-- Section Heading-->
+            <div class="section_heading text-center wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                <h3>Это кот</h3>
+                <p>А это карточка</p>
+                <div class="line"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <!-- Single Advisor-->
+        <div>
+            <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                <!-- Team Thumb-->
+                <div class="advisor_thumb ">
+                    <img src="data:;base64,{{ img }}" alt="Responsive image" class="img-fluid">
+                </div>
+                <!-- Team Details-->
+                <div class="single_advisor_details_info">
+                    <h6>Имя: {{ name }}</h6>
+                    <p class="designation">Порода: {{ breed }}</p>
+                    <p class="designation">Возраст: {{ age }}</p>
+                    <p class="designation">Описание: {{ description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
