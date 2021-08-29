@@ -1,22 +1,29 @@
 version: '3'
 services:
-  postgres:
-    image: postgres
-    container_name: postgres
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-db
+    container_name: db
     env_file:
       - .env
     ports:
       - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    command: sh -c "(nohup docker-entrypoint.sh postgres > /dev/null 2>&1 &) && sleep 3 && psql -d postgres -f init.sql &
+      while :;do :;done"
 
-
-  flask:
+  web:
     build: .
-    container_name: cats
+    container_name: web
     env_file:
       - .env
     ports:
-      - 8080:8080
+      - 80:8080
     depends_on:
-      - postgres
+      - db
+    command: python main.py
 
-
+volumes:
+  pg_data:

@@ -58,20 +58,23 @@ def get_list_sheets(count_sheets=10, number_sheets=0):
     return dict_show
 
 
-def get_cats_image():
+def get_cats_image(cats_db=None):
     """
     Транспонирование всех картинок в base64 для отображения на UI
+    :param cats_db:
     :param kwargs:
     :return:
     """
+    if cats_db is None:
+        cats_db = read_all_cats_image()
     return [
-            Cats(id=cat.id,
-                 img=b64encode(cat.img).decode("utf-8") if cat.img else None)
-            for cat in read_all_cats_image()
-       ]
+        Cats(id=cat.id,
+             img=b64encode(cat.img).decode("utf-8") if cat.img else None)
+        for cat in cats_db
+    ]
 
 
 if __name__ == '__main__':
     print(
-        get_cats_image()[0:0+5]
+        get_cats_image()[0:0 + 5]
     )

@@ -17,27 +17,27 @@
             <div class="col-12 pt-5">
                 <div class="row rounded bg-dark p-2">
                     <div class="col-3">
-                        <input id="input-breed" class="form-control mr-sm-2" type="text" placeholder="Порода" aria-label="Search">
+                        <input id="input-breed" class="form-control mr-sm-2" type="text" placeholder="Порода" aria-label="Search" value="{{breed}}">
                     </div>
                     <div class="col-3">
-                        <input id="input-name" class="form-control mr-sm-2" type="text" placeholder="Имя" aria-label="Search">
+                        <input id="input-name" class="form-control mr-sm-2" type="text" placeholder="Имя" aria-label="Search" value="{{name}}">
                     </div>
                     <div class="col-2">
-                        <input id="input-age" class="form-control mr-sm-2" type="text" placeholder="Возраст" aria-label="Search">
+                        <input id="input-age" class="form-control mr-sm-2" type="text" placeholder="Возраст" aria-label="Search" value="{{age}}">
                     </div>
                     <div class="col-3">
-                        <input id="input-description" class="form-control mr-sm-2" type="text" placeholder="Описание" aria-label="Search">
+                        <input id="input-description" class="form-control mr-sm-2" type="text" placeholder="Описание" aria-label="Search" value="{{description}}">
                     </div>
                     <div class="col-1">
-                        <button id="search" onclick="search_cats()" type="button" class="btn btn-outline-success">Поиск</button>
+                        <button id="search" onclick="search_cats(0)" type="button" class="btn btn-outline-success">Поиск</button>
                     </div>
                 </div>
 
 
                 <div class="row">
                 {% for cat in cats %}
-                    <div class="card p-2 m-2 ml-5" style="width: 18rem;">
-                        <img onclick="changeURL(this)" name="{{cat.id}}" src="data:;base64,{{ cat.img }}" class="card-img-top"  >
+                    <div class="card p-2 m-2 ml-5" style="width: 18rem; height: 18rem;">
+                        <img onclick="changeURL(this)" name="{{cat.id}}" src="data:;base64,{{ cat.img }}" class="card-img-top" style="width: 100%; height: 100%">
                     </div>
                 {% endfor %}
                 </div>
@@ -46,10 +46,10 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             {% for i,j in list_sheets.items() %}
-                            {% if request.path.split('/')[-1]== '%s'%(i|int-1)%}
-                            <li class="page-item active"><a class="page-link" href="{{ '%s'%j }}">{{ i }}</a></li>
+                            {% if request.path.split('/')[-1] == '%s'%(i|int-1)%}
+                            <li class="page-item active"><a class="page-link" onclick="search_cats({{j}})">{{ i }}</a></li>
                             {% else %}
-                            <li class="page-item"><a class="page-link" href="{{ '%s'%j }}">{{ i }}</a></li>
+                            <li class="page-item"><a class="page-link" onclick="search_cats({{j}})">{{ i }}</a></li>
                             {% endif %}
                             {% endfor %}
                         </ul>
@@ -66,33 +66,30 @@
         document.location.href = "/cat/" + btn.name;
     }
 
-    function loadXMLDoc(url, data, type="POST") {
-      var xmlhttp;
-      if (window.XMLHttpRequest) { // код для IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest();
-      } else { // код для IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      }
+    function search_cats(sheet){
+        var name = document.getElementById("input-name").value;
+        var breed = document.getElementById("input-breed").value;
+        var age = document.getElementById("input-age").value;
+        var description = document.getElementById("input-description").value;
+        var url = "/"+sheet+"?"
 
-      xmlhttp.open(type, url, true);
-      xmlhttp.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-      xmlhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
-      xmlhttp.setRequestHeader('Access-Control-Allow-Headers', '*');
-      xmlhttp.send(data);
+        if (name){
+            url+= "name="+name+"&";
+        }
 
-      xmlhttp.onload = location.reload();
-    }
+        if (breed){
+            url+= "breed="+breed+"&";
+        }
 
-    function search_cats(){
-        var data = {};
-        data['name']=document.getElementById("input-name").value;
-        data['breed']=document.getElementById("input-breed").value;
-        data['age']=document.getElementById("input-age").value;
-        data['description']=document.getElementById("input-description").value;
-        var json = "name=" + document.getElementById("input-name").value;
-        alert(json);
+        if (age){
+            url+= "age="+age+"&";
+        }
 
-        loadXMLDoc(url='/search', data=json, type="GET");
+        if (description){
+            url+= "description="+description+"&";
+        }
+
+        document.location.href = url;
 
       }
 </script>

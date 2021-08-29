@@ -20,7 +20,7 @@ class Cats(Base):
     __tablename__ = 'cats'
     __table_args__ = {'schema': schema_db}
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     breed = Column(String)
     age = Column(Integer)

@@ -1,9 +1,7 @@
 FROM python:3.8-slim
 
-COPY . /tmp
+COPY . /app
 
-RUN pip install -r /tmp/requirements.txt
+RUN pip install -r /app/requirements.txt
 
-WORKDIR /tmp
-
-CMD python main.py
+WORKDIR /app
